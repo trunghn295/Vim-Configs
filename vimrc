@@ -264,7 +264,11 @@ nnoremap  <C-L> <C-W>l
 " *************************************************************************************************
 
 " Include extended vim config files
-let nvim_conf_dir = '/home/$USER/.config/nvim/'
+if has("macunix")
+   let nvim_conf_dir = '/Users/$USER/.config/nvim/'
+else
+   let nvim_conf_dir = '/home/$USER/.config/nvim/'
+endif
 execute 'source '.nvim_conf_dir.'coc.vim'
 "
 " set to use onedark theme but none background
