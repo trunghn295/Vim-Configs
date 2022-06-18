@@ -1,0 +1,9 @@
+// use this file if not use coc extensions
+"languageserver": {
+   // languageserver for c/c++
+  "clangd": {
+    "command": "clangd",
+    "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+    "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
+  }
+
