@@ -8,9 +8,14 @@
 # Check and install neovim
 if ! which nvim; then
    echo "installing latest stable neovim..."
-   sudo add-apt-repository ppa:neovim-ppa/stable
-   sudo apt-get update
-   sudo apt-get install neovim
+   if [[ $OSTYPE == "darwin"* ]]; then
+      brew install nvim
+   # should update for windows and linux
+   else
+      sudo add-apt-repository ppa:neovim-ppa/stable
+      sudo apt-get update
+      sudo apt-get install neovim
+   fi
 else
    echo "neovim is already installed"
 fi

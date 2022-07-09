@@ -39,3 +39,9 @@ example, for C/C++ we need to set up llvm, clangd
 and we can decide to use coc extension to connect with LSP or setting in coc-setting.json
 https://github.com/neoclide/coc.nvim/wiki/Language-servers
 
+tip to open vim
+nvim +linenumber file => open file and go to the specify linenumber
+nvim +/pattern file => open file and search for the pattern
+nvim -d file file => open 2 files and show the diff
+nvim -c "normal command" file => open file and execute a command
+command | nvim - => open output of shell command in vim
