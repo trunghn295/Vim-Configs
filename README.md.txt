@@ -33,6 +33,8 @@ floaterm
 Alt + Left, Right, Up, Down to switch between floaterm windows
 if cannot edit, press i to get back to insert mode
 
+to exit terminal mode: Ctrl + \ + n
+
 coc
 to use coc we need to set up a separated LSP.
 example, for C/C++ we need to set up llvm, clangd
@@ -45,3 +47,4 @@ nvim +/pattern file => open file and search for the pattern
 nvim -d file file => open 2 files and show the diff
 nvim -c "normal command" file => open file and execute a command
 command | nvim - => open output of shell command in vim
+
