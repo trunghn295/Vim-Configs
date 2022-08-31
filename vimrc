@@ -127,6 +127,12 @@ endif
    " Install auto pair plugin
    Plug 'jiangmiao/auto-pairs'
 
+   " Install below plugins for plant uml
+   " If want to use plantmul plugin, then uncomment 3 below lines
+   " Plug 'aklt/plantuml-syntax'
+   " Plug 'tyru/open-browser.vim'
+   " Plug 'weirongxu/plantuml-previewer.vim'
+   
 call plug#end()
 " *************************************************************************************************
 
