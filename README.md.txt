@@ -48,3 +48,10 @@ nvim -d file file => open 2 files and show the diff
 nvim -c "normal command" file => open file and execute a command
 command | nvim - => open output of shell command in vim
 
+Intesting tips
+to make a column of index is in order of numbers: ctrl+q jk to choose elements in the column, g, ctrl+a
+exit terminal mode: ctrl+\ ctrl+n
+delete all buffer: :%bd
+save session in Session.vim file: :mks!, to open: nvim -S Session.vim
+do macro in lines: qa, q, ctrl-q jk to choose lines, :norm! @a
+search and replace in all buffer: :bufdo %s/pattern/replace/ge | update
