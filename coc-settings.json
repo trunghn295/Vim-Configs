@@ -6,4 +6,11 @@
     "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
     "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
   }
-
+   // use bash-lanuage-server for shell, run npm i -g bash-languae-server to install it first
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    }
+}
