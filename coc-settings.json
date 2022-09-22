@@ -1,4 +1,5 @@
 // use this file if not use coc extensions
+{
 "languageserver": {
    // languageserver for c/c++
   "clangd": {
@@ -13,4 +14,5 @@
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
     }
+}
 }
