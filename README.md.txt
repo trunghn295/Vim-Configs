@@ -55,4 +55,6 @@ delete all buffer: :%bd
 save session in Session.vim file: :mks!, to open: nvim -S Session.vim
 do macro in lines: qa, q, ctrl-q jk to choose lines, :norm! @a
 search and replace in all buffer: :bufdo %s/pattern/replace/ge | update
+search and do a norm command: %g/foo/norm d/foo, eg :%g/foo/norm d3j
 bookmark to a: ma  - jump to bookmark a: `a
+
