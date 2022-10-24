@@ -46,6 +46,7 @@ nvim +linenumber file => open file and go to the specify linenumber
 nvim +/pattern file => open file and search for the pattern
 nvim -d file file => open 2 files and show the diff
 nvim -c "normal command" file => open file and execute a command
+nvim $(find dir -iname pattern) => open files that found by find command
 command | nvim - => open output of shell command in vim
 
 Intesting tips
