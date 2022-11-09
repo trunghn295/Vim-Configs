@@ -59,3 +59,4 @@ search and replace in all buffer: :bufdo %s/pattern/replace/ge | update
 search and do a norm command: %g/foo/norm d/foo, eg :%g/foo/norm d3j
 bookmark to a: ma  - jump to bookmark a: `a
 correct typo/grammar: z=
+out result of a vim command to file: :redir @a, :command, :redir END, then open file and type "ap
