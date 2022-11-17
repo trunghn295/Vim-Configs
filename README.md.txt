@@ -57,6 +57,9 @@ save session in Session.vim file: :mks!, to open: nvim -S Session.vim
 do macro in lines: qa, q, ctrl-q jk to choose lines, :norm! @a
 search and replace in all buffer: :bufdo %s/pattern/replace/ge | update
 search and do a norm command: %g/foo/norm d/foo, eg :%g/foo/norm d3j
+search and delete lines not in pattern:
+  - :g!/\(pattern\)/d
+  - or :v/\v(pattern)/d
 bookmark to a: ma  - jump to bookmark a: `a
 correct typo/grammar: z=
 out result of a vim command to file: :redir @a, :command, :redir END, then open file and type "ap
