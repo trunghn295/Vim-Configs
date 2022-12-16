@@ -33,6 +33,8 @@ else
       sudo npm cache clean -f
       sudo npm install -g n
       sudo n stable
+      # if the latest nodejs is not supported in your current linux, then can downgrade it by 
+      # executing sudo n version, eg: sudo n 16
    fi
 fi
 
