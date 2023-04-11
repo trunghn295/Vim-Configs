@@ -18,7 +18,8 @@
         "command": "robotframework_ls",
         "filetypes": ["robot"],
         "settings": {
-         // here the ls configuration
+           // here the ls configuration
+           "robot.lint.robocop.enabled": "true"
          }
     }
 }
