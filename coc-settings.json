@@ -14,7 +14,8 @@
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
     },
-       "robotframework_ls": {
+   // run: pip3 install robotframework-lsp to install robotframework-lsp first
+   "robotframework_ls": {
         "command": "robotframework_ls",
         "filetypes": ["robot"],
         "settings": {
