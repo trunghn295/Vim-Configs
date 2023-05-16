@@ -37,6 +37,12 @@ endfun!
 autocmd BufWritePre * if !&binary && &ft !=# 'mail'
                    \|   call TrimWhitespace()
                    \| endif
+" Use zm to fold more, zr to fold less, zc to close a fold, zo to open it,
+" za to toggle between those two states, zM to close every fold, zR to open them and so on…
+augroup YAML
+    autocmd!
+    autocmd FileType yaml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
+augroup END
 " *************************************************************************************************
 
 " Auto install vim plug
@@ -156,6 +162,7 @@ if has('win32')
 endif
 " Ignore certain files and folders
 let NERDTreeIgnore = ['\.pyc$', '^__pycache__$', '\.exe$']
+let NERDTreeShowHidden=1
 let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Modified'  :'✹',
                 \ 'Staged'    :'✚',
