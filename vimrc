@@ -280,7 +280,7 @@ nnoremap  <C-L> <C-W>l
 if has("macunix")
    let nvim_conf_dir = '/Users/$USER/.config/nvim/'
 else
-   let nvim_conf_dir = '/home/$USER/.config/nvim/'
+   let nvim_conf_dir = '$HOME/.config/nvim/'
 endif
 execute 'source '.nvim_conf_dir.'coc.vim'
 "
