@@ -49,7 +49,7 @@ https://github.com/neoclide/coc.nvim/wiki/Language-servers
 - ```nvim $(find dir -iname pattern)``` => open files that found by find command
 - ```command | nvim``` - => open output of shell command in vim
 
-## Intesting tips:
+## Interesting tips:
 - to make a column of index is in order of numbers: ```ctrl+q jk to choose elements in the column, g, ctrl+a```
 - exit terminal mode: ```ctrl+\ ctrl+n```
 - delete all buffer: ```:%bd```
