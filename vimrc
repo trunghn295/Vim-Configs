@@ -232,7 +232,7 @@ nnoremap <silent> ,tn :NERDTree<CR>
 
 " Mapping floaterm
 let g:floaterm_position = 'topright'
-nnoremap <silent> <S-t> :FloatermNew --height=0.8 --width=0.7 --wintype=float --title="terminal"<CR>
+nnoremap <silent> <S-t> :FloatermNew --height=0.8 --width=0.85 --wintype=float --title="Trunks_terminal"<CR>
 nnoremap <silent> <S-Tab> :FloatermToggle<CR>
 tnoremap <silent> <S-Tab> <C-\><C-n>:FloatermToggle<CR>
 hi FloatermBorder guibg=gray guifg=cyan
@@ -241,8 +241,10 @@ tnoremap <A-Left> <C-\><C-n>:FloatermPrev<CR>
 tnoremap <A-Right> <C-\><C-n>:FloatermNext<CR>
 tnoremap <A-Up> <C-\><C-n>:FloatermFirst<CR>
 tnoremap <A-Down> <C-\><C-n>:FloatermLast<CR>
-
-
+# In windows, should use powershell instead of default cmd
+if has('win32')
+    let g:floaterm_shell = $SYSTEMROOT . '\System32\WindowsPowerShell\v1.0\powershell.exe'
+endif
 " Mapping vim-airline
 nnoremap <C-Left> :bprevious<CR>
 nnoremap <C-Right> :bnext<CR>
