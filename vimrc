@@ -9,18 +9,20 @@ set number                    " show line number
 " show space in vim
 set listchars=tab:>>,trail:¶,extends:>,precedes:<
 set list
+" let g:python_recommended_style = 0
 filetype plugin indent on     " set tab = 3 space
 set tabstop=3                 " show existing tab with 3 spaces width
 set shiftwidth=3              " when indenting with '>', use 3 spaces width
 set expandtab                 " On pressing tab, insert 3 spaces
 syntax on                     " enable syntax highlight
 set mouse=a                   " enable mouse
-set colorcolumn=100           " highlight at column 100
+set colorcolumn=120           " highlight at column 120
 hi ColorColumn ctermbg=lightgray guibg=gray
 set cursorline                " highlight current line
 set guifont=Consolas:h14
 set clipboard+=unnamedplus
 set spell
+nnoremap <c-z> <nop>
 " turn hybrid line numbers on switch to absolute number mode if inserting
 augroup numbertoggle
   autocmd!
@@ -43,6 +45,11 @@ augroup YAML
     autocmd!
     autocmd FileType yaml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
 augroup END
+augroup GROOVY
+    autocmd!
+    autocmd FileType groovy setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
+augroup END
+
 " *************************************************************************************************
 
 " Auto install vim plug
@@ -134,11 +141,18 @@ endif
    Plug 'jiangmiao/auto-pairs'
 
    " Install below plugins for plant uml
-   " If want to use plantmul plugin, then uncomment 3 below lines
-   " Plug 'aklt/plantuml-syntax'
-   " Plug 'tyru/open-browser.vim'
-   " Plug 'weirongxu/plantuml-previewer.vim'
-   
+   Plug 'aklt/plantuml-syntax'
+   Plug 'tyru/open-browser.vim'
+   Plug 'weirongxu/plantuml-previewer.vim'
+
+   Plug 'f-person/git-blame.nvim'
+
+   Plug 'puremourning/vimspector'
+   " Plug 'iamcco/markdown-preview.nvim'
+   " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+
+   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+   Plug 'habamax/vim-asciidoctor'
 call plug#end()
 " *************************************************************************************************
 
@@ -211,16 +225,22 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['pylint', 'flake8']
 " *************************************************************************************************
 
 
 " *************************************************************************************************
 " Mapping session
 " *************************************************************************************************
+
+" *************************************************************************************************
 " Mapping fzf
+" *************************************************************************************************
 nnoremap <silent> <C-f> :Files<CR>
 
+" *************************************************************************************************
 " Mapping nerdtree
+" *************************************************************************************************
 nnoremap <silent> <Tab> :NERDTreeToggle<CR>
 " find the current file in tree, change current dir to that dir
 nnoremap <silent> ,tf :NERDTreeFind<CR>:pwd<CR>
@@ -230,8 +250,12 @@ nnoremap <silent> ,tn :NERDTree<CR>
 " nnoremap <silent> <Up> <C-W><C-K><CR>
 " nnoremap <silent> <Down> <C-W><C-J><CR>
 
+" *************************************************************************************************
 " Mapping floaterm
-let g:floaterm_position = 'topright'
+" *************************************************************************************************
+" let g:floaterm_position = 'topright'
+hi FloatermBorder guibg=lightgray guifg=cyan
+hi FloatermNC guifg=gray
 nnoremap <silent> <S-t> :FloatermNew --height=0.8 --width=0.85 --wintype=float --title="Trunks_terminal"<CR>
 nnoremap <silent> <S-Tab> :FloatermToggle<CR>
 tnoremap <silent> <S-Tab> <C-\><C-n>:FloatermToggle<CR>
@@ -245,19 +269,27 @@ tnoremap <A-Down> <C-\><C-n>:FloatermLast<CR>
 if has('win32')
     let g:floaterm_shell = $SYSTEMROOT . '\System32\WindowsPowerShell\v1.0\powershell.exe'
 endif
+
+
+" *************************************************************************************************
 " Mapping vim-airline
-nnoremap <C-Left> :bprevious<CR>
-nnoremap <C-Right> :bnext<CR>
-nnoremap <C-Up> :bfirst<CR>
-nnoremap <C-Down> :blast<CR>
+" *************************************************************************************************
+nnoremap <Left> :bprevious<CR>
+nnoremap <Right> :bnext<CR>
+nnoremap <Up> :bfirst<CR>
+nnoremap <Down> :blast<CR>
 
 
+" *************************************************************************************************
 " Mapping syntastic
+" *************************************************************************************************
 " Ctrl + c to check code, ctrl + u to uncheck
-nnoremap <silent> <C-c> :SyntasticCheck <CR>
-nnoremap <silent> <C-u> :SyntasticToggleMode <CR>
+nnoremap <silent> <A-c> :SyntasticCheck <CR>
+nnoremap <silent> <A-u> :SyntasticToggleMode <CR>
 
+" *************************************************************************************************
 " Internal mapping
+" *************************************************************************************************
 " default:
 " " <C-x>s => check spell in insert mode
 " Resize panel
@@ -265,10 +297,15 @@ nmap <S-Right> :vertical resize +1 <CR>
 nmap <S-Left> :vertical resize -1 <CR>
 nmap <S-Up> :resize +1 <CR>
 nmap <S-Down> :resize -1 <CR>
+nmap <C-W> :bd <CR>
 " copy File Name
-nmap ,fn :let @+ = expand("%")<CR>
+nmap ,fn :let @+ = expand("%:t")<CR>
 " copy file path
 nmap ,fp :let @+ = expand("%:p")<CR>
+" copy dir path
+nmap ,dp :let @+ = expand("%:p:h")<CR>
+" copy dir name
+nmap ,dn :let @+ = expand("%:p:h:t")<CR>
 " change dir
 nmap ,cd :cd %:p:h<CR>:pwd<CR>
 "
@@ -276,11 +313,14 @@ nnoremap  <C-K> <C-W>k
 nnoremap  <C-J> <C-W>j
 nnoremap  <C-H> <C-W>h
 nnoremap  <C-L> <C-W>l
+
 " *************************************************************************************************
 
 " Include extended vim config files
 if has("macunix")
    let nvim_conf_dir = '/Users/$USER/.config/nvim/'
+elseif has("win32")
+   let nvim_conf_dir = $HOME . '/AppData/Local/nvim/'
 else
    let nvim_conf_dir = '$HOME/.config/nvim/'
 endif
@@ -289,4 +329,3 @@ execute 'source '.nvim_conf_dir.'coc.vim'
 " set to use onedark theme but none background
 colorscheme onedark
 hi Normal guibg=NONE ctermbg=NONE
-
