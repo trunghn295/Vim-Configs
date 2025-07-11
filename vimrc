@@ -265,7 +265,7 @@ tnoremap <A-Left> <C-\><C-n>:FloatermPrev<CR>
 tnoremap <A-Right> <C-\><C-n>:FloatermNext<CR>
 tnoremap <A-Up> <C-\><C-n>:FloatermFirst<CR>
 tnoremap <A-Down> <C-\><C-n>:FloatermLast<CR>
-# In windows, should use powershell instead of default cmd
+" In windows, should use powershell instead of default cmd
 if has('win32')
     let g:floaterm_shell = $SYSTEMROOT . '\System32\WindowsPowerShell\v1.0\powershell.exe'
 endif
