@@ -232,6 +232,10 @@ let g:syntastic_python_checkers = ['pylint', 'flake8']
 " *************************************************************************************************
 " Mapping session
 " *************************************************************************************************
+" In visual mode: Ctrl+c copies selection to clipboard
+vnoremap <C-c> "+y
+" In normal mode: Ctrl+c copies current line to clipboard
+nnoremap <C-c> "+yy
 
 " *************************************************************************************************
 " Mapping fzf
