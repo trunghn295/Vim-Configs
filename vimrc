@@ -1,5 +1,5 @@
-" This is Nguyen Hoang Trung's  confiuration file for Vim.
-" Its purpose is to use in all the environments that I work on.
+" This is Nguyen Hoang Trung's configuration file for Vim.
+" Its purpose is to be used in all the environments that I work on.
 
 
 " *************************************************************************************************
@@ -22,6 +22,7 @@ set cursorline                " highlight current line
 set guifont=Consolas:h14
 set clipboard+=unnamedplus
 set spell
+let mapleader = ' '
 nnoremap <c-z> <nop>
 " turn hybrid line numbers on switch to absolute number mode if inserting
 augroup numbertoggle
@@ -147,13 +148,34 @@ endif
 
    Plug 'f-person/git-blame.nvim'
 
-   Plug 'puremourning/vimspector'
-   " Plug 'iamcco/markdown-preview.nvim'
-   " Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+   " Plug 'puremourning/vimspector'
 
-   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-   Plug 'habamax/vim-asciidoctor'
+   if has('win32')
+      Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+      Plug 'habamax/vim-asciidoctor'
+   else
+      Plug 'iamcco/markdown-preview.nvim'
+      Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npx --yes yarn install' }
+   endif
+   " in Bosch, run cntlm to pass proxy first before running :Copilot setup
+   Plug 'github/copilot.vim'
+   Plug 'nvim-lua/plenary.nvim'
+   Plug 'CopilotC-Nvim/CopilotChat.nvim'
 call plug#end()
+lua << EOF
+require("CopilotChat").setup {
+  -- See Configuration section for options
+  window = {
+    layout = "float", -- Layout of the chat window, can be "horizontal" or "vertical"
+    width = 0.85, -- Width of the chat window, can be a number (in columns) or a float (percentage)
+    height = 0.8, -- Height of the chat window, can be a number (in lines) or a float (percentage)
+  },
+  {
+        provider = "copilot", -- Provider to use for the chat, can be "copilot" or "openai",
+        model = "gpt-5", -- Model to use for the chat, can be "gpt-3.5-turbo" or "gpt-4"
+     }
+}
+EOF
 " *************************************************************************************************
 
 
@@ -223,32 +245,55 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['pylint', 'flake8']
+"let g:syntastic_check_on_open = 0
+"let g:syntastic_check_on_wq = 0
+let g:syntastic_xml_checkers = ['xmllint']
+if has('win32')
+   let g:syntastic_python_checkers = ['pylint', 'flake8']
+   "C:\Program Files\Anaconda3\Scripts\pylint.exe"
+   let g:syntastic_python_pylint_exec = 'C:\Program Files\Anaconda3\Scripts\pylint.exe'
+   let g:syntastic_python_pylint_args = '--rcfile=C:\Users\ryg2hc\.pylintrc'
+   let g:syntastic_mode_map = { 'mode': 'manual', 'active_filetypes': [], 'passive_filetypes': ['python'] }
+else
+   let g:syntastic_python_checkers = ['pylint']
+endif
+
+augroup JsonToJsonc
+    autocmd! FileType json set filetype=jsonc
+augroup END
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
 " *************************************************************************************************
 
 
 " *************************************************************************************************
-" Mapping session
+"                                      Mapping session
 " *************************************************************************************************
-" In visual mode: Ctrl+c copies selection to clipboard
-vnoremap <C-c> "+y
-" In normal mode: Ctrl+c copies current line to clipboard
-nnoremap <C-c> "+yy
+
+" *************************************************************************************************
+"                             Mapping Copilot and CopilotChat
+" *************************************************************************************************
+nnoremap <leader>ct :CopilotChatToggle<CR>
+nnoremap <leader>cc :CopilotChat<CR>
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <leader><Tab> copilot#Accept("\<Tab>")
 
 " *************************************************************************************************
 " Mapping fzf
 " *************************************************************************************************
-nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <leader>ff :Files<CR>
 
 " *************************************************************************************************
 " Mapping nerdtree
 " *************************************************************************************************
 nnoremap <silent> <Tab> :NERDTreeToggle<CR>
 " find the current file in tree, change current dir to that dir
-nnoremap <silent> ,tf :NERDTreeFind<CR>:pwd<CR>
-nnoremap <silent> ,tn :NERDTree<CR>
+nnoremap <silent> <leader>tf :NERDTreeFind<CR>:pwd<CR>
+nnoremap <silent> <leader>tn :NERDTree<CR>
+nnoremap <silent> <leader>tr :NERDTreeRefreshRoot<CR>
 " nnoremap <silent> <Left> <C-W><C-H><CR>
 " nnoremap <silent> <Right> <C-W><C-L><CR>
 " nnoremap <silent> <Up> <C-W><C-K><CR>
@@ -260,18 +305,16 @@ nnoremap <silent> ,tn :NERDTree<CR>
 " let g:floaterm_position = 'topright'
 hi FloatermBorder guibg=lightgray guifg=cyan
 hi FloatermNC guifg=gray
-nnoremap <silent> <S-t> :FloatermNew --height=0.8 --width=0.85 --wintype=float --title="Trunks_terminal"<CR>
+nnoremap <silent> <leader>fn :FloatermNew --height=0.8 --width=0.85 --wintype=float --title="Trunks_terminal"<CR>
 nnoremap <silent> <S-Tab> :FloatermToggle<CR>
 tnoremap <silent> <S-Tab> <C-\><C-n>:FloatermToggle<CR>
-hi FloatermBorder guibg=gray guifg=cyan
 " Switch between floaterm in terminal mode
 tnoremap <A-Left> <C-\><C-n>:FloatermPrev<CR>
 tnoremap <A-Right> <C-\><C-n>:FloatermNext<CR>
 tnoremap <A-Up> <C-\><C-n>:FloatermFirst<CR>
 tnoremap <A-Down> <C-\><C-n>:FloatermLast<CR>
-" In windows, should use powershell instead of default cmd
 if has('win32')
-    let g:floaterm_shell = $SYSTEMROOT . '\System32\WindowsPowerShell\v1.0\powershell.exe'
+   let g:floaterm_shell = $SYSTEMROOT . '\System32\WindowsPowerShell\v1.0\powershell.exe'
 endif
 
 
@@ -287,13 +330,21 @@ nnoremap <Down> :blast<CR>
 " *************************************************************************************************
 " Mapping syntastic
 " *************************************************************************************************
-" Ctrl + c to check code, ctrl + u to uncheck
+" Alt + c to check code, Alt + u to uncheck
 nnoremap <silent> <A-c> :SyntasticCheck <CR>
 nnoremap <silent> <A-u> :SyntasticToggleMode <CR>
+
 
 " *************************************************************************************************
 " Internal mapping
 " *************************************************************************************************
+
+" In visual mode: Ctrl+c copies selection to clipboard
+vnoremap <C-c> "+y
+
+" In normal mode: Ctrl+c copies current line to clipboard
+nnoremap <C-c> "+yy
+
 " default:
 " " <C-x>s => check spell in insert mode
 " Resize panel
@@ -303,15 +354,15 @@ nmap <S-Up> :resize +1 <CR>
 nmap <S-Down> :resize -1 <CR>
 nmap <C-W> :bd <CR>
 " copy File Name
-nmap ,fn :let @+ = expand("%:t")<CR>
+nmap <leader>cfn :let @+ = expand("%:t")<CR>
 " copy file path
-nmap ,fp :let @+ = expand("%:p")<CR>
+nmap <leader>cfp :let @+ = expand("%:p")<CR>
 " copy dir path
-nmap ,dp :let @+ = expand("%:p:h")<CR>
+nmap <leader>cdp :let @+ = expand("%:p:h")<CR>
 " copy dir name
-nmap ,dn :let @+ = expand("%:p:h:t")<CR>
+nmap <leader>cdn :let @+ = expand("%:p:h:t")<CR>
 " change dir
-nmap ,cd :cd %:p:h<CR>:pwd<CR>
+nmap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "
 nnoremap  <C-K> <C-W>k
 nnoremap  <C-J> <C-W>j
@@ -321,15 +372,51 @@ nnoremap  <C-L> <C-W>l
 " *************************************************************************************************
 
 " Include extended vim config files
-if has("macunix")
-   let nvim_conf_dir = '/Users/$USER/.config/nvim/'
-elseif has("win32")
-   let nvim_conf_dir = $HOME . '/AppData/Local/nvim/'
-else
-   let nvim_conf_dir = '$HOME/.config/nvim/'
+if has('win32')
+   let nvim_conf_dir = 'C:\Users\ryg2hc\AppData\Local\nvim\'
+   execute 'source '.nvim_conf_dir.'coc.vim'
 endif
-execute 'source '.nvim_conf_dir.'coc.vim'
 "
 " set to use onedark theme but none background
 colorscheme onedark
 hi Normal guibg=NONE ctermbg=NONE
+
+" *************************************************************************************************
+" config for vimspector
+" *************************************************************************************************
+" let g:vimspector_base_dir='/home/ryg2hc/.vim/plugged/vimspector'
+" let g:vimspector_adapters = #{
+"       \   test_debugpy: #{ extends: 'debugpy-python2' }
+"       \ }
+
+" args: set argument for the program that debugging
+" see more: https://puremourning.github.io/vimspector-web/demo-setup.html
+" let g:vimspector_configurations = {
+"       \ "test_debugpy_config": {
+"       \   "adapter": "debugpy-python2",
+"       \   "filetypes": [ "python" ],
+"       \   "configuration": {
+"       \   "name": "Python: Launch",
+"       \     "request": "launch",
+"       \     "type": "python",
+"       \     "cwd": "${fileDirname}",
+"       \     "args": [],
+"       \     "program": "${file}",
+"       \     "stopOnEntry": "true",
+"       \     "console": "externalTerminal",
+"       \   },
+"       \   "breakpoints": {
+"       \     "exception": {
+"       \       "raised": "N",
+"       \       "uncaught": "",
+"       \       "userUnhandled": ""
+"       \     }
+"       \   }
+"       \ } }
+" To use Visual Studio-like mappings,
+" let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+"
+" nmap <Leader>db <Plug>VimspectorBreakpoints
+" nmap <Leader>de <Plug>VimspectorReset
+
+" *************************************************************************************************
